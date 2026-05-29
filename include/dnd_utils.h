@@ -9,4 +9,3 @@ int validate_number(const char *num);
 void *client_thread(void *arg);
 
 #endif
-

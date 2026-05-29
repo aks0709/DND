@@ -44,4 +44,3 @@ const char* type_to_str(dnd_type_t t);
 extern pthread_mutex_t db_mutex;
 
 #endif
-
