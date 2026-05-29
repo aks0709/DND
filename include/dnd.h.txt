@@ -1,0 +1,47 @@
+#ifndef DND_H
+#define DND_H
+
+#include "common.h"
+
+#define DB_PATH "data/clients.csv"
+#define MAX_CLIENTS 1000
+#define MAX_NUM_LEN 32
+#define MAX_BLOCKED 100
+#define MAX_LINE 1024
+#define LISTEN_PORT 8080
+
+typedef enum {
+    DND_NONE = 0,
+    DND_GLOBAL,
+    DND_SELECTIVE
+} dnd_type_t;
+
+typedef struct {
+    char number[MAX_NUM_LEN];
+    int active;
+    dnd_type_t type;
+    char blocked[MAX_BLOCKED][MAX_NUM_LEN];
+    int blocked_count;
+} client_entry_t;
+
+/* DB functions */
+int load_db();
+int save_db();
+client_entry_t* find_or_create(const char *number);
+client_entry_t* find_entry(const char *number);
+int update_entry(const client_entry_t *entry);
+
+/* DND logic */
+int activate_dnd(const char *number, dnd_type_t type, char blocked[][MAX_NUM_LEN],
+                 int blocked_count, char *errmsg, size_t errlen);
+int deactivate_dnd(const char *number, char *errmsg, size_t errlen);
+int make_call(const char *from, const char *to, char *result, size_t rlen);
+
+/* Helpers */
+dnd_type_t parse_type(const char *s);
+const char* type_to_str(dnd_type_t t);
+
+extern pthread_mutex_t db_mutex;
+
+#endif
+

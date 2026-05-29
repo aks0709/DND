@@ -1,0 +1,12 @@
+#ifndef DND_UTILS_H
+#define DND_UTILS_H
+
+/* Validate subscriber number: only digits, length 8–15 */
+int validate_number(const char *num);
+
+
+// Thread entry point for each client
+void *client_thread(void *arg);
+
+#endif
+

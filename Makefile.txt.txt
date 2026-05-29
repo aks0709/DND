@@ -1,0 +1,28 @@
+CC = gcc
+CFLAGS = -Wall -Wextra -pthread -g -Iinclude
+SRCDIR = src
+BINDIR = bin
+DATADIR = data
+
+all: dirs $(BINDIR)/server $(BINDIR)/client
+
+dirs:
+        @mkdir -p $(BINDIR) $(DATADIR)
+
+$(BINDIR)/server: \
+        $(SRCDIR)/server.c \
+        $(SRCDIR)/dnd_db.c \
+        $(SRCDIR)/sessions.c \
+        $(SRCDIR)/dnd_utils.c \
+        $(SRCDIR)/socket_utils.c \
+        $(SRCDIR)/dnd_functions.c
+        $(CC) $(CFLAGS) -o $@ $^ -lpthread
+
+$(BINDIR)/client: \
+        $(SRCDIR)/client.c \
+        $(SRCDIR)/socket_utils.c
+        $(CC) $(CFLAGS) -o $@ $^
+
+clean:
+        @rm -f $(BINDIR)/server $(BINDIR)/client
+        @rm -f $(SRCDIR)/*.o
